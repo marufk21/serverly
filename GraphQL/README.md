@@ -13,6 +13,8 @@ A simple notes application built with Next.js, GraphQL, and TypeScript.
 
 ## Project Structure
 
+#### Notes App (Code)
+
 ```
 graphql-notes-app/
 ├── app/
@@ -73,6 +75,38 @@ graphql-notes-app/
 ├── tsconfig.json
 ├── next.config.mjs
 └── tailwind.config.ts
+```
+
+#### Ecommerce App
+
+```
+/app
+ └─ /api
+     └─ /graphql
+         └─ route.ts                 # Next.js API endpoint
+
+/lib
+ ├─ /db/
+ │   ├─ prisma.ts                    # or mongoose connection
+ │   └─ mockData.ts
+ ├─ /graphql/
+ │   ├─ /modules/
+ │   │   ├─ /product/
+ │   │   │   ├─ product.typeDefs.ts
+ │   │   │   ├─ product.resolvers.ts
+ │   │   │   └─ product.model.ts
+ │   │   ├─ /user/
+ │   │   │   ├─ user.typeDefs.ts
+ │   │   │   ├─ user.resolvers.ts
+ │   │   │   └─ user.model.ts
+ │   │   ├─ /order/
+ │   │   │   ├─ order.typeDefs.ts
+ │   │   │   ├─ order.resolvers.ts
+ │   │   │   └─ order.model.ts
+ │   │   └─ index.ts                 # combine all modules
+ │   ├─ schema.ts                    # merge all typeDefs
+ │   ├─ resolvers.ts                 # merge all resolvers
+ │   └─ server.ts                    # Apollo server instance
 ```
 
 ## Getting Started
