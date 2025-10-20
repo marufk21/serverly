@@ -1,24 +1,24 @@
-import { initTRPC } from '@trpc/server'
-import { z } from 'zod'
-import type { Context } from './context.js'
-import superjson from 'superjson'
+import { initTRPC } from "@trpc/server";
+import { z } from "zod";
+import type { Context } from "./context.js";
+import superjson from "superjson";
 
 // Initialize tRPC
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
-})
+});
 
 // Base router and procedure helpers
-export const router = t.router
-export const publicProcedure = t.procedure
+export const router = t.router;
+export const publicProcedure = t.procedure;
 
 // Define the notes router
 export const notesRouter = router({
   // Get all notes
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.note.findMany({
-      orderBy: { updatedAt: 'desc' },
-    })
+      orderBy: { updatedAt: "desc" },
+    });
   }),
 
   // Get a single note by ID
@@ -27,16 +27,18 @@ export const notesRouter = router({
     .query(async ({ ctx, input }) => {
       return await ctx.prisma.note.findUnique({
         where: { id: input.id },
-      })
+      });
     }),
 
   // Create a new note
   create: publicProcedure
-    .input(z.object({
-      title: z.string().min(1).max(100),
-      content: z.string(),
-      userId: z.string(),
-    }))
+    .input(
+      z.object({
+        title: z.string().min(1).max(100),
+        content: z.string(),
+        userId: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.note.create({
         data: {
@@ -44,16 +46,18 @@ export const notesRouter = router({
           content: input.content,
           userId: input.userId,
         },
-      })
+      });
     }),
 
   // Update an existing note
   update: publicProcedure
-    .input(z.object({
-      id: z.string(),
-      title: z.string().min(1).max(100),
-      content: z.string(),
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string().min(1).max(100),
+        content: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.note.update({
         where: { id: input.id },
@@ -61,7 +65,7 @@ export const notesRouter = router({
           title: input.title,
           content: input.content,
         },
-      })
+      });
     }),
 
   // Delete a note
@@ -70,14 +74,14 @@ export const notesRouter = router({
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.note.delete({
         where: { id: input.id },
-      })
+      });
     }),
-})
+});
 
 // Export the app router
 export const appRouter = router({
   notes: notesRouter,
-})
+});
 
 // Export type definition of API
-export type AppRouter = typeof appRouter
+export type AppRouter = typeof appRouter;
